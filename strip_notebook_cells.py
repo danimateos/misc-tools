@@ -1,8 +1,9 @@
-import nbformat 
+import argparse
+
+import nbformat
 
 
 def strip_cell(cell):
-
     cell['source'] = ''
     cell['outputs'] = []
 
@@ -47,7 +48,6 @@ def drop_duplicates(cells):
     for cell, previous in zip(cells[1:], cells):
         if cell['cell_type'] == 'code':
             pass
-            #print (cell, previous)
         if cell['source'] != previous['source']:
             result.append(cell)
 
@@ -55,13 +55,18 @@ def drop_duplicates(cells):
 
 
 if __name__ == '__main__':
-    import sys
+    parser = argparse.ArgumentParser(description='''Remove the content of code cells in a jupyter notebook. Squash \
+    consecutive code cells into a single empty one.''')
 
-    notebook_path = sys.argv[1]
-    new_path = insert_in_path(notebook_path, 'empty')
-    latest_version = sorted(nbformat.versions.keys())[-1]
-    nb = nbformat.read(notebook_path, latest_version)
+    parser.add_argument('files', nargs='+', help='The ipynb file or files to strip.')
 
-    cleared_notebook = strip_notebook(nb)
+    namespace = parser.parse_args()
 
-    nbformat.write(cleared_notebook, new_path)
+    for notebook_path in namespace.files:
+        new_path = insert_in_path(notebook_path, 'empty')
+        latest_version = sorted(nbformat.versions.keys())[-1]
+        nb = nbformat.read(notebook_path, latest_version)
+
+        cleared_notebook = strip_notebook(nb)
+
+        nbformat.write(cleared_notebook, new_path)
