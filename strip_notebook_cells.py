@@ -4,7 +4,13 @@ import nbformat
 
 
 def strip_cell(cell):
-    cell['source'] = ''
+
+    tags = cell['metadata'].get('tags', [])
+    
+    if not 'keep' in tags:
+    
+        cell['source'] = ''
+
     cell['outputs'] = []
 
     if iscode(cell):
