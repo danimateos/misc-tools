@@ -14,6 +14,7 @@ OUT="docs/assets/images/$NEW_FILENAME"
 # https://stackoverflow.com/questions/27658675/how-to-remove-last-n-characters-from-a-string-in-bash
 # ${v::${#v}-4}
 
+mkdir -p raw_images
 cp "$INPUT_FILE" $INTERMEDIATE
 
 # From https://www.smashingmagazine.com/2015/06/efficient-image-resizing-with-imagemagick/ :
